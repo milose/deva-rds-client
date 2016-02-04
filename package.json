@@ -1,0 +1,18 @@
+{
+  "name": "deva-rds",
+  "version": "0.1.0",
+  "description": "RDS grabber",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "deva.co",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "request": "^2.69.0",
+    "serialport": "^2.0.6",
+    "socket.io": "^1.4.5",
+    "string": "^3.3.1"
+  }
+}
