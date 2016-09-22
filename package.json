@@ -14,5 +14,9 @@
     "serialport": "^2.0.6",
     "socket.io-client": "^1.4.8",
     "string": "^3.3.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/milose/deva-rds-client.git"
+  },
 }
