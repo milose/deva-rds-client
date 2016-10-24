@@ -24,7 +24,7 @@ socket.on('connect', function() {
         console.log(msg);
     }
 
-    notify(msg);
+    // notify(msg);
 });
 
 socket.on('disconnect', function() {
@@ -40,9 +40,9 @@ socket.on('disconnect', function() {
 });
 
 socket.on(channel, function(data) {
-    var msg = 'Writing to RDS: ' + data;
-
     if (data == null) return;
+
+    var msg = 'Writing to RDS: ' + data;
 
     if (process.env.RDS_SILENT == 'false') {
         console.log(msg);
@@ -68,7 +68,7 @@ function notify(text) {
         request.post(process.env.SLACK_URL, {
             form: {
                 payload: JSON.stringify({
-                    'username': 'raspberry',
+                    'username': process.env.WS_USER,
                     'icon_emoji': ':strawberry:',
                     'text': text,
                 })
