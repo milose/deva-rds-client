@@ -69,7 +69,7 @@ function notify(text) {
             form: {
                 payload: JSON.stringify({
                     'username': process.env.WS_USER,
-                    'icon_emoji': ':strawberry:',
+                    'icon_emoji': process.env.SLACK_ICON,
                     'text': text,
                 })
             }
