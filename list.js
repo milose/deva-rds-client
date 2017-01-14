@@ -10,4 +10,8 @@ uart.list(function (err, ports) {
     if (port.pnpId) console.log(port.pnpId)
     if (port.manufacturer) console.log(port.manufacturer)
   })
+
+  if (err) {
+    console.log(err)
+  }
 })
