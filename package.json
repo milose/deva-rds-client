@@ -1,20 +1,18 @@
 {
   "name": "deva-rds",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RDS grabber",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "forever -w --minUptime=1000 --spinSleepTime=1000 ./index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "deva.co",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^2.0.0",
-    "request": "^2.69.0",
-    "serialport": "^2.0.6",
-    "socket.io-client": "^1.4.8",
-    "string": "^3.3.1"
+    "dotenv": "^4",
+    "request": "^2",
+    "serialport": "^5",
+    "socket.io-client": "^2"
   },
   "repository": {
     "type": "git",
