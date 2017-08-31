@@ -1,15 +1,15 @@
 'use strict'
 
 var format = require('./serial-format')
-var SerialPort = require('serialport').SerialPort
+var SerialPort = require('serialport')
 
-exports.reboot = function (port, baudrate, errorCallback) {
+exports.reboot = function (port, baudRate, errorCallback) {
   var serial = new SerialPort(port, {
-    baudrate: baudrate
-  }, true) // this is the openImmediately flag
+    baudRate: baudRate
+  }) // this is the openImmediately flag
 
   serial.on('open', function () {
-        // Write the reboot command
+    // Write the reboot command
     serial.write(format.cmdReboot(), function (err, results) {
       if (err) {
         errorCallback('send dynamic', '' + err)
@@ -23,31 +23,31 @@ exports.reboot = function (port, baudrate, errorCallback) {
   })
 }
 
-exports.send = function (text, toEprom, port, baudrate, ps, errorCallback) {
+exports.send = function (text, toEprom, port, baudRate, ps, errorCallback) {
   var serial = new SerialPort(port, {
-    baudrate: baudrate
-  }, true) // this is the openImmediately flag
+    baudRate: baudRate
+  }) // this is the openImmediately flag
 
   serial.on('open', function () {
-        // Write the text
+    // Write the text
     serial.write(format.dynamic(text), function (err, results) {
       if (err) {
         errorCallback('send dynamic', '' + err)
       }
 
-            // PS Buffered
+      // PS Buffered
       serial.write(format.psBuffered(ps), function (err, results) {
         if (err) {
           errorCallback('send psBuffered', '' + err + ' (sending: ' + ps + ')')
         }
 
-                // PS
+        // PS
         serial.write(format.ps(ps), function (err, results) {
           if (err) {
             errorCallback('send ps', '' + err + ' (sending: ' + ps + ')')
           }
 
-                    // Store to eprom
+          // Store to eprom
           if (toEprom) {
             serial.write(format.cmdEprom(), function (err, results) {
               if (err) {
