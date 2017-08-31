@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 'use strict'
 
 const path = require('path')
@@ -7,12 +5,14 @@ const path = require('path')
 require('dotenv').config({
   path: path.join(__dirname, '.env')
 })
+
 var channel = process.env.WS_KEY + '.' + process.env.WS_USER
 var toEprom = process.env.RDS_WRITE === 'true'
 
 var request = require('request')
 var serial = require('./modules/serial-rds')
 var format = require('./modules/serial-format')
+
 var socket = require('socket.io-client')(process.env.WS_URI + ':' + process.env.WS_PORT, {
   timeout: false,
   query: 'username=' + process.env.WS_USER
@@ -25,8 +25,6 @@ socket.on('connect', function () {
   if (process.env.RDS_SILENT === 'false') {
     console.log(msg)
   }
-
-    // notify(msg);
 })
 
 socket.on('disconnect', function () {
