@@ -1,13 +1,11 @@
 #!/usr/bin/env node
 
-'use strict';
+'use strict'
+
+const path = require('path')
 
 require('dotenv').config({
-    path: __dirname + '/.env'
-});
-var toEprom = process.env.RDS_WRITE == 'true';
+  path: path.join(__dirname, '.env')
+})
 
-var serial = require('./modules/serial-rds');
-var format = require('./modules/serial-format');
-
-console.log('nothing to test');
+console.log('nothing to test')

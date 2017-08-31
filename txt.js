@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 
-'use strict';
+'use strict'
 
-require('dotenv').config();
+const path = require('path')
 
-var x = require('./modules/txt-reader');
+require('dotenv').config({
+  path: path.join(__dirname, '.env')
+})
 
-x.get('drugacija.me', '/RDS/NowOnAir.txt', function(data) {
-    console.log(data);
-});
+var x = require('./modules/txt-reader')
+
+x.get('drugacija.me', '/RDS/NowOnAir.txt', function (data) {
+  console.log(data)
+})
