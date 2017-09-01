@@ -11,6 +11,7 @@ exports.reboot = (port, baudRate, errorCallback) => {
       if (err) {
         errorCallback('send dynamic', '' + err)
       }
+
       serial.close()
     })
   })
@@ -48,11 +49,12 @@ exports.send = (text, toEprom, port, baudRate, ps, errorCallback) => {
               if (err) {
                 errorCallback('send cmdEprom', '' + err)
               }
+
               serial.close()
             })
-          } else {
-            serial.close()
           }
+
+          serial.close()
         })
       })
     })
