@@ -2,7 +2,7 @@
 
 const diacritics = require('diacritics')
 
-exports = input => {
+module.exports = input => {
   input = diacritics.remove(input)
 
   return input.trim()
