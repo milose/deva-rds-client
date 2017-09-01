@@ -2,9 +2,10 @@
 
 const path = require('path')
 const request = require('request')
-const serial = require('./modules/serial-rds')
-const format = require('./modules/serial-format')
+const clean = require('./modules/clean')
 const socketio = require('socket.io-client')
+const serial = require('./modules/serial-rds')
+
 require('dotenv').config({
   path: path.join(__dirname, '.env')
 })
@@ -24,20 +25,21 @@ socket.on('connect', () => {
   log('Connected to ' + socket.io.uri + ' ' + channel)
 })
 
+socket.on(channel, data => {
+  if (data == null) return
+
+  log('Received: ' + data)
+  log('RDS Text: ' + clean(data))
+
+  serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
+})
+
 socket.on('disconnect', () => {
   const msg = 'Disconnected. Writing to RDS: ' + env.RDS_DEFAULT
   log(msg)
   notify(msg)
 
-  serial.send(format.rdsPrepare(env.RDS_DEFAULT), shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
-})
-
-socket.on(channel, data => {
-  if (data == null) return
-
-  log('Writing to RDS: ' + data)
-
-  serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
+  serial.send(env.RDS_DEFAULT, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
 const serialError = (error, data) => {
