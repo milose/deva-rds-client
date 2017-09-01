@@ -21,19 +21,18 @@ const socket = socketio(env.WS_URI + ':' + env.WS_PORT, {
 })
 
 // Main events
-socket.on('connect', () => log('Connected to ' + socket.io.uri + ' ' + channel))
+socket.on('connect', () => log(`'Connected to ${socket.io.uri} ${channel}`))
 
 socket.on(channel, data => {
   if (data == null) return
 
-  log('Received: ' + data)
-  log('RDS Text: ' + clean(data))
+  log(`Received: ${data} => ${clean(data)}`)
 
   serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
 socket.on('disconnect', () => {
-  const msg = 'Disconnected. Writing to RDS: ' + env.RDS_DEFAULT
+  const msg = `Disconnected. Writing to RDS: ${env.RDS_DEFAULT}`
   log(msg)
   notify(msg)
 
@@ -41,7 +40,7 @@ socket.on('disconnect', () => {
 })
 
 const serialError = (error, data) => {
-  const msg = 'Serial error: ' + error
+  const msg = `Serial error: ${error}`
   log(msg, data)
   notify(msg)
 }
@@ -60,7 +59,7 @@ const notify = text => {
       }
     })
   } catch (ex) {
-    log('Slack error: ' + ex)
+    log(`'Slack error: ${ex}`)
   }
 }
 
