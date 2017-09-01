@@ -9,6 +9,7 @@
   "author": "deva.co",
   "license": "MIT",
   "dependencies": {
+    "diacritics": "^1",
     "dotenv": "^4",
     "request": "^2",
     "serialport": "^5",
