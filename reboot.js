@@ -6,12 +6,14 @@ require('dotenv').config({
   path: path.join(__dirname, '.env')
 })
 
-var serial = require('./modules/serial-rds')
+let env = process.env
 
-serial.reboot(process.env.RDS_PORT, process.env.RDS_RATE, function (error) {
-  var msg = 'Serial error: ' + error
+let serial = require('./modules/serial-rds')
 
-  if (process.env.RDS_SILENT === 'false') {
+serial.reboot(env.RDS_PORT, env.RDS_RATE, function (error) {
+  let msg = 'Serial error: ' + error
+
+  if (env.RDS_SILENT === 'false') {
     console.log(msg)
   }
 })

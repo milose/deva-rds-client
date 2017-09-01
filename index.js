@@ -6,35 +6,37 @@ require('dotenv').config({
   path: path.join(__dirname, '.env')
 })
 
-var channel = process.env.WS_KEY + '.' + process.env.WS_USER
-var toEprom = process.env.RDS_WRITE === 'true'
+let env = process.env
 
-var request = require('request')
-var serial = require('./modules/serial-rds')
-var format = require('./modules/serial-format')
+let channel = env.WS_KEY + '.' + env.WS_USER
+let toEprom = env.RDS_WRITE === 'true'
 
-var socket = require('socket.io-client')(process.env.WS_URI + ':' + process.env.WS_PORT, {
+let request = require('request')
+let serial = require('./modules/serial-rds')
+let format = require('./modules/serial-format')
+
+let socket = require('socket.io-client')(env.WS_URI + ':' + env.WS_PORT, {
   timeout: false,
-  query: 'username=' + process.env.WS_USER
+  query: 'username=' + env.WS_USER
 })
 
 // Main events
 socket.on('connect', function () {
-  var msg = 'Connected to ' + socket.io.uri + ' ' + channel
+  let msg = 'Connected to ' + socket.io.uri + ' ' + channel
 
-  if (process.env.RDS_SILENT === 'false') {
+  if (env.RDS_SILENT === 'false') {
     console.log(msg)
   }
 })
 
 socket.on('disconnect', function () {
-  var msg = 'Disconnected. Writing to RDS: ' + process.env.RDS_DEFAULT
+  let msg = 'Disconnected. Writing to RDS: ' + env.RDS_DEFAULT
 
-  if (process.env.RDS_SILENT === 'false') {
+  if (env.RDS_SILENT === 'false') {
     console.log(msg)
   }
 
-  serial.send(format.rdsPrepare(process.env.RDS_DEFAULT), toEprom, process.env.RDS_PORT, process.env.RDS_RATE, process.env.RDS_PS, writeError)
+  serial.send(format.rdsPrepare(env.RDS_DEFAULT), toEprom, env.RDS_PORT, env.RDS_RATE, env.RDS_PS, writeError)
 
   notify(msg)
 })
@@ -42,19 +44,19 @@ socket.on('disconnect', function () {
 socket.on(channel, function (data) {
   if (data == null) return
 
-  var msg = 'Writing to RDS: ' + data
+  let msg = 'Writing to RDS: ' + data
 
-  if (process.env.RDS_SILENT === 'false') {
+  if (env.RDS_SILENT === 'false') {
     console.log(msg)
   }
 
-  serial.send(data, toEprom, process.env.RDS_PORT, process.env.RDS_RATE, process.env.RDS_PS, writeError)
+  serial.send(data, toEprom, env.RDS_PORT, env.RDS_RATE, env.RDS_PS, writeError)
 })
 
-var writeError = function (error) {
-  var msg = 'Serial error: ' + error
+let writeError = function (error) {
+  let msg = 'Serial error: ' + error
 
-  if (process.env.RDS_SILENT === 'false') {
+  if (env.RDS_SILENT === 'false') {
     console.log(msg)
   }
 
@@ -62,22 +64,22 @@ var writeError = function (error) {
 }
 
 function notify (text) {
-  if (process.env.SLACK_URL === '') return
+  if (env.SLACK_URL === '') return
 
   try {
-    request.post(process.env.SLACK_URL, {
+    request.post(env.SLACK_URL, {
       form: {
         payload: JSON.stringify({
-          'username': process.env.WS_USER,
-          'icon_emoji': process.env.SLACK_ICON,
+          'username': env.WS_USER,
+          'icon_emoji': env.SLACK_ICON,
           'text': text
         })
       }
     })
   } catch (ex) {
-    var msg = 'Slack error: ' + ex
+    let msg = 'Slack error: ' + ex
 
-    if (process.env.RDS_SILENT === 'false') {
+    if (env.RDS_SILENT === 'false') {
       console.log(msg)
     }
   }

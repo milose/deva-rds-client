@@ -1,10 +1,10 @@
 'use strict'
 
-var format = require('./serial-format')
-var SerialPort = require('serialport')
+let format = require('./serial-format')
+let SerialPort = require('serialport')
 
 exports.reboot = function (port, baudRate, errorCallback) {
-  var serial = new SerialPort(port, {
+  let serial = new SerialPort(port, {
     baudRate: baudRate
   }) // this is the openImmediately flag
 
@@ -24,7 +24,7 @@ exports.reboot = function (port, baudRate, errorCallback) {
 }
 
 exports.send = function (text, toEprom, port, baudRate, ps, errorCallback) {
-  var serial = new SerialPort(port, {
+  let serial = new SerialPort(port, {
     baudRate: baudRate
   }) // this is the openImmediately flag
 

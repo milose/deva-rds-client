@@ -1,7 +1,7 @@
 'use strict'
 
-var max = 8
-var maxDps = 80
+let max = 8
+let maxDps = 80
 
 /*
     RDS formatters
@@ -53,12 +53,12 @@ exports.rdsPrepare = function (string) {
   return this.cleanUp(string).split(' ').filter((word) => word.trim() !== '')
         // make an array of words that are exactly max wide
         .map((word) => {
-          var times = Math.ceil(word.length / max)
+          let times = Math.ceil(word.length / max)
           if (times > 1) {
                 // word longer then max
-            var diff = word.length - max
-            var split = []
-            for (var i = 0; i <= diff; i++) {
+            let diff = word.length - max
+            let split = []
+            for (let i = 0; i <= diff; i++) {
               split.push(word.substring(i, max + i))
             }
                 // return as one word
@@ -103,18 +103,18 @@ exports.cleanUp = function (string) {
 /*
     Private methods
  */
-var hexString = function (string) {
-  var hex = new Buffer(string, 'ascii').toString('hex')
+let hexString = function (string) {
+  let hex = new Buffer(string, 'ascii').toString('hex')
 
     // Byte values 0xFD, 0xFE, and 0xFF are transformed into a pair of bytes
   return hex.replace('fd', 'fd00').replace('fe', 'fd01').replace('ff', 'fd02')
 }
 
-var hexBuffer = function (string) {
+let hexBuffer = function (string) {
   return new Buffer(string, 'hex')
 }
 
-var hexCount = function (string) {
+let hexCount = function (string) {
   let count = string.length.toString(16)
   if (count.length === 1) {
     count = ''.concat(0, count)
