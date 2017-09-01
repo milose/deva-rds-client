@@ -1,15 +1,14 @@
 'use strict'
 
-let format = require('./serial-format')
-let SerialPort = require('serialport')
+const format = require('./serial-format')
+const SerialPort = require('serialport')
 
-exports.reboot = function (port, baudRate, errorCallback) {
-  let serial = new SerialPort(port, {
+exports.reboot = (port, baudRate, errorCallback) => {
+  const serial = new SerialPort(port, {
     baudRate: baudRate
-  }) // this is the openImmediately flag
+  })
 
-  serial.on('open', function () {
-    // Write the reboot command
+  serial.on('open', () => {
     serial.write(format.cmdReboot(), function (err, results) {
       if (err) {
         errorCallback('send dynamic', '' + err)
@@ -18,38 +17,38 @@ exports.reboot = function (port, baudRate, errorCallback) {
     })
   })
 
-  serial.on('error', function (error) {
+  serial.on('error', error => {
     errorCallback('reboot other', '' + error)
   })
 }
 
-exports.send = function (text, toEprom, port, baudRate, ps, errorCallback) {
-  let serial = new SerialPort(port, {
+exports.send = (text, toEprom, port, baudRate, ps, errorCallback) => {
+  const serial = new SerialPort(port, {
     baudRate: baudRate
-  }) // this is the openImmediately flag
+  })
 
-  serial.on('open', function () {
+  serial.on('open', () => {
     // Write the text
-    serial.write(format.dynamic(text), function (err, results) {
+    serial.write(format.dynamic(text), (err, results) => {
       if (err) {
         errorCallback('send dynamic', '' + err)
       }
 
       // PS Buffered
-      serial.write(format.psBuffered(ps), function (err, results) {
+      serial.write(format.psBuffered(ps), (err, results) => {
         if (err) {
           errorCallback('send psBuffered', '' + err + ' (sending: ' + ps + ')')
         }
 
         // PS
-        serial.write(format.ps(ps), function (err, results) {
+        serial.write(format.ps(ps), (err, results) => {
           if (err) {
             errorCallback('send ps', '' + err + ' (sending: ' + ps + ')')
           }
 
           // Store to eprom
           if (toEprom) {
-            serial.write(format.cmdEprom(), function (err, results) {
+            serial.write(format.cmdEprom(), (err, results) => {
               if (err) {
                 errorCallback('send cmdEprom', '' + err)
               }
@@ -63,7 +62,7 @@ exports.send = function (text, toEprom, port, baudRate, ps, errorCallback) {
     })
   })
 
-  serial.on('error', function (error) {
+  serial.on('error', error => {
     errorCallback('send other', '' + error)
   })
 }
