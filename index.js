@@ -64,8 +64,8 @@ const notify = text => {
   }
 }
 
-const log = (message, data) => {
+const log = (message, data = '') => {
   if (!JSON.parse(env.RDS_SILENT)) {
-    console.log(message, data ? data : '')
+    console.log(message, data)
   }
 }
