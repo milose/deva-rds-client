@@ -29,7 +29,7 @@ socket.on('disconnect', () => {
   log(msg)
   notify(msg)
   
-  serial.send(format.rdsPrepare(env.RDS_DEFAULT), shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, writeError)
+  serial.send(format.rdsPrepare(env.RDS_DEFAULT), shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
 socket.on(channel, data => {
@@ -37,12 +37,12 @@ socket.on(channel, data => {
   
   log('Writing to RDS: ' + data)
   
-  serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, writeError)
+  serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
-const writeError = error => {
+const serialError = (error, data) => {
   const msg = 'Serial error: ' + error
-  log(msg)
+  log(msg, data)
   notify(msg)
 }
 
@@ -64,8 +64,8 @@ const notify = text => {
   }
 }
 
-const log = message => {
+const log = (message, data) => {
     if (!JSON.parse(env.RDS_SILENT)) {
-        console.log(message)
+        console.log(message, data)
     }
 }
