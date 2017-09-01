@@ -20,7 +20,7 @@ const socket = socketio(env.WS_URI + ':' + env.WS_PORT, {
 })
 
 // Main events
-socket.on('connect', () => {  
+socket.on('connect', () => {
   log('Connected to ' + socket.io.uri + ' ' + channel)
 })
 
@@ -28,15 +28,15 @@ socket.on('disconnect', () => {
   const msg = 'Disconnected. Writing to RDS: ' + env.RDS_DEFAULT
   log(msg)
   notify(msg)
-  
+
   serial.send(format.rdsPrepare(env.RDS_DEFAULT), shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
 socket.on(channel, data => {
   if (data == null) return
-  
+
   log('Writing to RDS: ' + data)
-  
+
   serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
@@ -65,7 +65,7 @@ const notify = text => {
 }
 
 const log = (message, data) => {
-    if (!JSON.parse(env.RDS_SILENT)) {
-        console.log(message, data)
-    }
+  if (!JSON.parse(env.RDS_SILENT)) {
+    console.log(message, data ? data : '')
+  }
 }

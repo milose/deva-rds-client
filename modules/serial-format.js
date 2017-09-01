@@ -1,12 +1,14 @@
 'use strict'
+const pad = require('./pad')
 const diacritics = require('diacritics')
-let max = 8
-let maxDps = 80
+
+const max = 8
+const maxDps = 80
 
 /*
     RDS formatters
  */
-exports.dynamic = function (input) {
+exports.dynamic = input => {
   input = this.rdsPrepare(input)
   if (input.length > maxDps) input = input.substring(0, maxDps)
 
@@ -14,7 +16,7 @@ exports.dynamic = function (input) {
   return hexBuffer('fe7600' + hexString(input) + 'fffe76' + hexCount(input) + 'ff')
 }
 
-exports.ps = function (input) {
+exports.ps = input => {
   input = this.cleanUp(input)
   if (input.length > max) input = input.substring(0, max)
   if (input.length < max) input = input.padRight(max)
@@ -22,7 +24,7 @@ exports.ps = function (input) {
   return 'fec8' + hexString(input) + 'ff'
 }
 
-exports.psBuffered = function (input) {
+exports.psBuffered = input => {
   input = this.cleanUp(input)
   if (input.length > max) input = input.substring(0, max)
   if (input.length < max) input = input.padRight(max)
@@ -33,30 +35,30 @@ exports.psBuffered = function (input) {
 /*
     Commands
  */
-exports.cmdRead = function () {
+exports.cmdRead = () => {
   return hexBuffer('fed000c0ff')
 }
 
-exports.cmdEprom = function () {
+exports.cmdEprom = () => {
   return hexBuffer('fe7145ff')
 }
 
-exports.cmdReboot = function () {
+exports.cmdReboot = () => {
   return hexBuffer('fe7152ff')
 }
 
 /*
     Helpers
  */
-exports.rdsPrepare = function (string) {
+exports.rdsPrepare = string => {
   // make an array and remove empty items
   return this.cleanUp(string).split(' ').filter((word) => word.trim() !== '')
     // make an array of words that are exactly max wide
     .map((word) => {
-      let times = Math.ceil(word.length / max)
+      const times = Math.ceil(word.length / max)
       if (times > 1) {
         // word longer then max
-        let diff = word.length - max
+        const diff = word.length - max
         let split = []
         for (let i = 0; i <= diff; i++) {
           split.push(word.substring(i, max + i))
@@ -65,13 +67,13 @@ exports.rdsPrepare = function (string) {
         return split.join('')
       } else {
         // word shorter then max, center it.
-        return word.pad(max)
+        return pad(word, max)
       }
     })
     .join('')
 }
 
-exports.cleanUp = function (string) {
+exports.cleanUp = string => {
   string = diacritics.remove(string)
 
   return string.trim()
@@ -103,18 +105,18 @@ exports.cleanUp = function (string) {
 /*
     Private methods
  */
-let hexString = function (string) {
+const hexString = string => {
   let hex = new Buffer(string, 'ascii').toString('hex')
 
   // Byte values 0xFD, 0xFE, and 0xFF are transformed into a pair of bytes
   return hex.replace('fd', 'fd00').replace('fe', 'fd01').replace('ff', 'fd02')
 }
 
-let hexBuffer = function (string) {
+const hexBuffer = string => {
   return new Buffer(string, 'hex')
 }
 
-let hexCount = function (string) {
+const hexCount = string => {
   let count = string.length.toString(16)
   if (count.length === 1) {
     count = ''.concat(0, count)
