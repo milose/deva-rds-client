@@ -1,18 +1,11 @@
 'use strict'
 
-let http = require('http')
+const http = require('http')
 
-exports.get = function (host, path, callback) {
-  return http.get({
-    host: host,
-    path: path
-  }, function (response) {
+exports.get = (host, path, callback) => {
+  return http.get({ host, path }, response => {
     let body = ''
-    response.on('data', function (d) {
-      body += d
-    })
-    response.on('end', function () {
-      callback(body)
-    })
+    response.on('data', d => body += d)
+    response.on('end', () => callback(body))
   })
 }
