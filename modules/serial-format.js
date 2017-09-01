@@ -67,7 +67,7 @@ exports.rdsPrepare = string => {
         return split.join('')
       } else {
         // word shorter then max, center it.
-        return pad(word, max)
+        return pad.center(word, max)
       }
     })
     .join('')
