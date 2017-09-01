@@ -21,7 +21,7 @@ const socket = socketio(env.WS_URI + ':' + env.WS_PORT, {
 })
 
 // Main events
-socket.on('connect', () => log(`'Connected to ${socket.io.uri} ${channel}`))
+socket.on('connect', () => log(`Connected to ${socket.io.uri} ${channel}`))
 
 socket.on(channel, data => {
   if (data == null) return
