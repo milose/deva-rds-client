@@ -19,7 +19,7 @@ exports.dynamic = input => {
 exports.ps = input => {
   input = this.cleanUp(input)
   if (input.length > max) input = input.substring(0, max)
-  if (input.length < max) input = input.padRight(max)
+  if (input.length < max) input = pad.right(input, max)
 
   return 'fec8' + hexString(input) + 'ff'
 }
@@ -27,7 +27,7 @@ exports.ps = input => {
 exports.psBuffered = input => {
   input = this.cleanUp(input)
   if (input.length > max) input = input.substring(0, max)
-  if (input.length < max) input = input.padRight(max)
+  if (input.length < max) input = pad.right(input, max)
 
   return 'fe02' + hexString(input) + 'fffec8' + hexString(input) + 'ff'
 }
