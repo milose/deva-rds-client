@@ -4,7 +4,7 @@ const format = require('./serial-format')
 const SerialPort = require('serialport')
 
 exports.reboot = (port, baudRate, errorCallback) => {
-  const serial = new SerialPort(port, { baudRate })
+  const serial = new SerialPort(port, { baudRate: baudRate })
 
   serial.on('open', () => {
     serial.write(format.cmdReboot(), function (err, results) {
@@ -21,7 +21,7 @@ exports.reboot = (port, baudRate, errorCallback) => {
 }
 
 exports.send = (text, toEprom, port, baudRate, ps, errorCallback) => {
-  const serial = new SerialPort(port, { baudRate })
+  const serial = new SerialPort(port, { baudRate: baudRate })
 
   serial.on('open', () => {
     // Write the text
