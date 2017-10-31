@@ -50,11 +50,11 @@ exports.rdsPrepare = string => {
     .filter(word => word.trim() !== '')
     // check if the previous word can be combined with the current
     .reduce((carry, current) => {
-      const last = carry.slice(-1).pop()
+      const previous = carry.slice(-1).pop() // get the previous word
 
-      if (last && last.length + current.length < max) {
-        carry.pop() // remove last item from the array
-        current = last + ' ' + current // concat it to the current
+      if (previous && previous.length + current.length < max) {
+        carry.pop() // remove previous item from the array
+        current = previous + ' ' + current // concat it to the current
       }
 
       carry.push(current)
