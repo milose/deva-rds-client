@@ -48,7 +48,21 @@ exports.rdsPrepare = string => {
   return clean(string)
     .split(' ')
     .filter(word => word.trim() !== '')
-    .map((word) => { // make an array of words that are exactly max wide
+    // check if the previous word can be combined with the current
+    .reduce((carry, current) => {
+      const last = carry.slice(-1).pop()
+
+      if (last && last.length + current.length < max) {
+        carry.pop() // remove last item from the array
+        current = last + ' ' + current // concat it to the current
+      }
+
+      carry.push(current)
+
+      return carry
+    }, [])
+    // make an array of words that are exactly max wide
+    .map((word) => {
       const times = Math.ceil(word.length / max)
 
       if (times > 1) {
