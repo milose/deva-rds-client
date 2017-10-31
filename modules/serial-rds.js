@@ -24,6 +24,7 @@ exports.reboot = (port, baudRate, errorCallback) => {
 exports.send = (text, toEprom, port, baudRate, ps, errorCallback) => {
   const serial = new SerialPort(port, { baudRate: baudRate })
 
+  // @TODO Revisit this. Cascading :(
   serial.on('open', () => {
     // Write the text
     serial.write(format.dynamic(text), (err, results) => {

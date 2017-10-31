@@ -1,4 +1,5 @@
 'use strict'
+
 const pad = require('./pad')
 const clean = require('./clean')
 
@@ -48,7 +49,21 @@ exports.rdsPrepare = string => {
   return clean(string)
     .split(' ')
     .filter(word => word.trim() !== '')
-    .map((word) => { // make an array of words that are exactly max wide
+    // check if the previous word can be combined with the current
+    .reduce((carry, current) => {
+      const previous = carry.slice(-1).pop() // get the previous word
+
+      if (previous && previous.length + current.length < max) {
+        carry.pop() // remove previous item from the array
+        current = previous + ' ' + current // concat it to the current
+      }
+
+      carry.push(current)
+
+      return carry
+    }, [])
+    // make an array of words that are exactly max wide
+    .map((word) => {
       const times = Math.ceil(word.length / max)
 
       if (times > 1) {
