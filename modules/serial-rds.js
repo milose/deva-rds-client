@@ -9,7 +9,7 @@ exports.reboot = (port, baudRate, errorCallback) => {
   serial.on('open', () => {
     serial.write(format.cmdReboot(), function (err, results) {
       if (err) {
-        errorCallback('send dynamic', '' + err)
+        errorCallback('send cmdReboot', '' + err)
       }
 
       serial.close()
