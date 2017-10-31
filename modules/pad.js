@@ -10,12 +10,14 @@ const pad = (str, len = 0, dir = 'center', chr = ' ') => {
       case 'left':
         str = Array(len + 1 - str.length).join(chr) + str
         break
+
       case 'center':
         const padLen = len - str.length
         const right = Math.ceil(padLen / 2)
         const left = padLen - right
         str = Array(left + 1).join(chr) + str + Array(right + 1).join(chr)
         break
+
       default:
         str = str + Array(len + 1 - str.length).join(chr)
         break

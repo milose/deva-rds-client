@@ -1,4 +1,5 @@
 'use strict'
+
 const pad = require('./pad')
 const clean = require('./clean')
 
