@@ -1,21 +1,16 @@
 'use strict'
 
-const path = require('path')
-const request = require('request')
 const clean = require('./modules/clean')
 const socketio = require('socket.io-client')
 const serial = require('./modules/serial-rds')
 
-require('dotenv').config({
-  path: path.join(__dirname, '.env')
-})
+require('dotenv').config()
 
 const env = process.env
 const channel = env.WS_KEY + '.' + env.WS_USER
 const baudRate = parseInt(env.RDS_RATE)
-const shouldWrite = JSON.parse(env.RDS_WRITE)
 
-const socket = socketio(env.WS_URI + ':' + env.WS_PORT, {
+const socket = socketio(env.WS_URI, {
   timeout: false,
   query: 'username=' + env.WS_USER
 })
@@ -28,7 +23,7 @@ socket.on(channel, data => {
 
   log(`Received: ${data} => ${clean(data)}`)
 
-  serial.send(data, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
+  serial.send(data, env.RDS_WRITE === 'true', env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
 socket.on('disconnect', () => {
@@ -36,17 +31,18 @@ socket.on('disconnect', () => {
   log(msg)
   notify(msg)
 
-  serial.send(env.RDS_DEFAULT, shouldWrite, env.RDS_PORT, baudRate, env.RDS_PS, serialError)
+  serial.send(env.RDS_DEFAULT, env.RDS_WRITE === 'true', env.RDS_PORT, baudRate, env.RDS_PS, serialError)
 })
 
 const serialError = (error, data) => {
   const msg = `Serial error: ${error}`
-  log(msg, data)
   notify(msg)
+  log(msg, data)
 }
 
 const notify = text => {
   if (!env.SLACK_URL) return
+  if (!env.NODE_ENV !== 'production') return
 
   try {
     request.post(env.SLACK_URL, {
@@ -64,7 +60,5 @@ const notify = text => {
 }
 
 const log = (message, data = '') => {
-  if (!JSON.parse(env.RDS_SILENT)) {
-    console.log(message, data)
-  }
+  if (process.env.NODE_ENV !== 'production') console.log(message, data)
 }

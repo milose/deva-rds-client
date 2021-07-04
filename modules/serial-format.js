@@ -88,14 +88,14 @@ exports.rdsPrepare = string => {
     Private methods
  */
 const hexString = string => {
-  let hex = new Buffer(string, 'ascii').toString('hex')
+  let hex = Buffer.from(string, 'ascii').toString('hex')
 
   // Byte values 0xFD, 0xFE, and 0xFF are transformed into a pair of bytes
   return hex.replace('fd', 'fd00').replace('fe', 'fd01').replace('ff', 'fd02')
 }
 
 const hexBuffer = string => {
-  return new Buffer(string, 'hex')
+  return new Buffer.from(string, 'hex')
 }
 
 const hexCount = string => {
