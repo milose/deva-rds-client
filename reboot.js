@@ -7,8 +7,9 @@ require('dotenv').config({
 })
 
 const env = process.env
+const baudRate = parseInt(env.RDS_RATE)
 
-serial.reboot(env.RDS_PORT, env.RDS_RATE, (error) => {
+serial.reboot(env.RDS_PORT, baudRate, (error) => {
     if (!JSON.parse(env.RDS_SILENT)) {
         console.log('Serial error: ' + error)
     }
