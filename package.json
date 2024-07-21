@@ -2,12 +2,13 @@
   "name": "deva-rds",
   "version": "0.1.1",
   "description": "RDS grabber",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "node test.js",
     "list": "node list.js",
     "text": "node txt.js",
-    "reboot": "node reboot.js"
+    "reboot": "node reboot.js",
+    "start": "node app.js"
   },
   "author": "deva.co",
   "license": "MIT",
