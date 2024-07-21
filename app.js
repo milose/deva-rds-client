@@ -78,3 +78,5 @@ const notify = async (content) => {
 const log = (message, data = '') => {
   if (process.env.NODE_ENV !== 'production') console.log(message, data)
 }
+
+notify('App started.')
