@@ -36,7 +36,7 @@ socket.on(channel, (data) => {
 socket.on('disconnect', () => {
     const msg = `Disconnected. Writing to RDS: ${env.RDS_DEFAULT}`
     log(msg)
-    notify(msg)
+    if (process.env.NODE_ENV !== 'production') notify(msg)
 
     serial.send(
         env.RDS_DEFAULT,
@@ -50,18 +50,17 @@ socket.on('disconnect', () => {
 
 const serialError = (error, data) => {
     const msg = `Serial error: ${error}`
-    notify(msg)
+    notify(msg, extras)
     log(msg, data)
 }
 
-const notify = async (content) => {
+const notify = async (content, extras = null) => {
     if (!env.SLACK_URL) return
-    if (env.NODE_ENV == 'production') return
 
     let response = await fetch(env.SLACK_URL, {
         method: 'post',
         body: JSON.stringify({
-            content,
+            content: content + ' ' + extras,
             username: env.WS_USER,
             avatar_url: env.SLACK_AVATAR ?? null,
         }),
