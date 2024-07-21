@@ -50,7 +50,7 @@ socket.on('disconnect', () => {
 
 const serialError = (error, data) => {
     const msg = `Serial error: ${error}`
-    notify(msg, extras)
+    notify(msg, data)
     log(msg, data)
 }
 
