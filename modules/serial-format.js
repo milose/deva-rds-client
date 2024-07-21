@@ -19,7 +19,7 @@ export const cmdReboot = () => hexBuffer('fe7152ff')
     RDS formatters
  */
 export const dynamic = (input) => {
-    input = this.rdsPrepare(input)
+    input = rdsPrepare(input)
     if (input.length > maxDps) input = input.substring(0, maxDps)
 
     return hexBuffer(
