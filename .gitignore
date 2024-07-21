@@ -4,3 +4,6 @@ vendor
 log.json
 .tags
 .tags1
+.idea
+.vscode
+.DS_Store
