@@ -22,7 +22,13 @@ export const reboot = (path, baudRate, errorCallback) => {
 }
 
 export const send = (text, toEprom, path, baudRate, ps, errorCallback) => {
-    const serial = new SerialPort({ path, baudRate })
+    const serial = new SerialPort({ path, baudRate, autoOpen: false })
+
+    serial.open(function (err) {
+        if (err) {
+            return errorCallback('port init', err.message)
+        }
+    })
 
     // @TODO Revisit this. Cascading :(
     serial.on('open', () => {
