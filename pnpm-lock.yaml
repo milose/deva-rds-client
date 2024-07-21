@@ -18,10 +18,10 @@ importers:
         specifier: ^2.88.2
         version: 2.88.2
       serialport:
-        specifier: ^9.2.0
+        specifier: ^9.2.8
         version: 9.2.8
       socket.io-client:
-        specifier: ^4.1.2
+        specifier: ^4.7.5
         version: 4.7.5
 
 packages:
