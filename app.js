@@ -67,9 +67,7 @@ const notify = async (content) => {
         }),
         headers: { 'Content-Type': 'application/json' },
     })
-    if (response.ok) {
-        log('ok')
-    } else {
+    if (!response.ok) {
         log(`Slack error: ${response.status}`)
     }
 }
