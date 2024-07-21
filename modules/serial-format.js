@@ -1,7 +1,7 @@
 'use strict'
 
-const pad = require('./pad')
-const clean = require('./clean')
+import clean from './clean.js'
+import * as pad from './pad.js'
 
 const max = 8
 const maxDps = 80
@@ -9,16 +9,16 @@ const maxDps = 80
 /*
     Commands
  */
-exports.cmdRead = () => hexBuffer('fed000c0ff')
+export const cmdRead = () => hexBuffer('fed000c0ff')
 
-exports.cmdEprom = () => hexBuffer('fe7145ff')
+export const cmdEprom = () => hexBuffer('fe7145ff')
 
-exports.cmdReboot = () => hexBuffer('fe7152ff')
+export const cmdReboot = () => hexBuffer('fe7152ff')
 
 /*
     RDS formatters
  */
-exports.dynamic = (input) => {
+export const dynamic = (input) => {
     input = this.rdsPrepare(input)
     if (input.length > maxDps) input = input.substring(0, maxDps)
 
@@ -27,7 +27,7 @@ exports.dynamic = (input) => {
     )
 }
 
-exports.ps = (input) => {
+export const ps = (input) => {
     input = clean(input)
     if (input.length > max) input = input.substring(0, max)
     if (input.length < max) input = pad.right(input, max)
@@ -35,7 +35,7 @@ exports.ps = (input) => {
     return 'fec8' + hexString(input) + 'ff'
 }
 
-exports.psBuffered = (input) => {
+export const psBuffered = (input) => {
     input = clean(input)
     if (input.length > max) input = input.substring(0, max)
     if (input.length < max) input = pad.right(input, max)
@@ -46,7 +46,7 @@ exports.psBuffered = (input) => {
 /*
     Helpers
  */
-exports.rdsPrepare = (string) => {
+export const rdsPrepare = (string) => {
     // make an array and remove empty items
     return (
         clean(string)

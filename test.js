@@ -1,11 +1,11 @@
 'use strict'
 
-const path = require('path')
-const format = require('./modules/serial-format')
+import 'dotenv/config'
+import fetch from 'node-fetch'
+import * as format from './modules/serial-format.js'
 
-require('dotenv').config({
-    path: path.join(__dirname, '.env'),
-})
-
+const response = await fetch('https://rds.drugacija.me/city/NowOnAir.txt')
+const body = await response.text()
 // @TODO Use a proper testing tool.
-console.log(format.rdsPrepare('mi nismo andjeli').match(/.{1,8}/g))
+console.log(body)
+console.log(format.rdsPrepare(body).match(/.{1,8}/g))

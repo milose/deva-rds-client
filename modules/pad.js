@@ -1,8 +1,8 @@
 'use strict'
 
-exports.left = (str, len, chr = ' ') => pad(str, len, 'left', chr)
-exports.center = (str, len, chr = ' ') => pad(str, len, 'center', chr)
-exports.right = (str, len, chr = ' ') => pad(str, len, 'right', chr)
+export const left = (str, len, chr = ' ') => pad(str, len, 'left', chr)
+export const center = (str, len, chr = ' ') => pad(str, len, 'center', chr)
+export const right = (str, len, chr = ' ') => pad(str, len, 'right', chr)
 
 const pad = (str, len = 0, dir = 'center', chr = ' ') => {
     if (len + 1 >= str.length) {

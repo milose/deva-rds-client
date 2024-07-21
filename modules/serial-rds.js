@@ -1,10 +1,10 @@
 'use strict'
+
 import { SerialPort } from 'serialport'
+import * as format from './serial-format.js'
 
-const format = require('./serial-format')
-
-exports.reboot = (port, baudRate, errorCallback) => {
-    const serial = new SerialPort({ path: path, baudRate: baudRate })
+export const reboot = (path, baudRate, errorCallback) => {
+    const serial = new SerialPort({ path, baudRate })
 
     serial.on('open', () => {
         serial.write(format.cmdReboot(), function (err, results) {
@@ -21,8 +21,8 @@ exports.reboot = (port, baudRate, errorCallback) => {
     })
 }
 
-exports.send = (text, toEprom, port, baudRate, ps, errorCallback) => {
-    const serial = new SerialPort({ path: path, baudRate: baudRate })
+export const send = (text, toEprom, path, baudRate, ps, errorCallback) => {
+    const serial = new SerialPort({ path, baudRate })
 
     // @TODO Revisit this. Cascading :(
     serial.on('open', () => {

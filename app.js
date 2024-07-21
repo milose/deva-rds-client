@@ -1,10 +1,10 @@
 'use strict'
 
-const clean = require('./modules/clean')
-const socketio = require('socket.io-client')
-const serial = require('./modules/serial-rds')
-
-require('dotenv').config()
+import 'dotenv/config'
+import socketio from 'socket.io-client'
+import fetch from 'node-fetch'
+import clean from './modules/clean.js'
+import * as serial from './modules/serial-rds.js'
 
 const env = process.env
 const channel = env.WS_KEY + '.' + env.WS_USER
@@ -54,22 +54,23 @@ const serialError = (error, data) => {
     log(msg, data)
 }
 
-const notify = (text) => {
+const notify = async (content) => {
     if (!env.SLACK_URL) return
-    if (!env.NODE_ENV !== 'production') return
+    if (env.NODE_ENV == 'production') return
 
-    try {
-        request.post(env.SLACK_URL, {
-            form: {
-                payload: JSON.stringify({
-                    username: env.WS_USER,
-                    icon_emoji: env.SLACK_ICON,
-                    text: text,
-                }),
-            },
-        })
-    } catch (ex) {
-        log(`'Slack error: ${ex}`)
+    let response = await fetch(env.SLACK_URL, {
+        method: 'post',
+        body: JSON.stringify({
+            content,
+            username: env.WS_USER,
+            avatar_url: env.SLACK_AVATAR ?? null,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+    })
+    if (response.ok) {
+        log('ok')
+    } else {
+        log(`Slack error: ${response.status}`)
     }
 }
 

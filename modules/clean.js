@@ -1,8 +1,8 @@
 'use strict'
 
-const diacritics = require('diacritics')
+import diacritics from 'diacritics'
 
-module.exports = (input) => {
+export default (input) => {
     input = diacritics.remove(input)
 
     return input
