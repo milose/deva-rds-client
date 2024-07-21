@@ -1,9 +1,9 @@
 'use strict'
 
-const http = require('https')
+const https = require('https')
 
 exports.get = (host, callback) => {
-    http.get(host, (res) => {
+    https.get(host, (res) => {
         const { statusCode } = res
 
         let error
