@@ -6,6 +6,7 @@ import fetch from 'node-fetch'
 import clean from './modules/clean.js'
 import * as serial from './modules/serial-rds.js'
 
+let lastNotification = null
 const env = process.env
 const channel = env.WS_KEY + '.' + env.WS_USER
 const baudRate = parseInt(env.RDS_RATE)
@@ -40,8 +41,12 @@ socket.on(channel, (data) => {
 
 socket.on('disconnect', () => {
     const msg = `Disconnected. Writing to RDS: ${env.RDS_DEFAULT}`
-    log(msg)
-    notify(msg)
+    if (msg != lastNotification) {
+        log(msg)
+        notify(msg)
+
+        lastNotification = msg
+    }
 
     serial.send(
         env.RDS_DEFAULT,
