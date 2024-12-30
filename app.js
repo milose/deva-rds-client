@@ -23,7 +23,12 @@ socket.on(channel, (data) => {
     if (data == null) return
 
     if (data === 'reboot') {
-        notify('RDS reboot initiated.')
+        let msg = 'RDS reboot initiated.'
+        if (msg != lastNotification) {
+            notify(msg)
+
+            lastNotification = msg
+        }
         return serial.reboot(env.RDS_PORT, baudRate, serialError)
     }
 
@@ -60,8 +65,12 @@ socket.on('disconnect', () => {
 
 const serialError = (error, data) => {
     const msg = `Serial error: ${error}`
-    notify(msg + ' (' + data + ')')
-    log(msg, data)
+    if (msg != lastNotification) {
+        notify(msg + ' (' + data + ')')
+        log(msg, data)
+
+        lastNotification = msg
+    }
 }
 
 const notify = async (content) => {
